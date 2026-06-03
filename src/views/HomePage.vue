@@ -1,56 +1,97 @@
 <template>
-  <ion-page>
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-title>Blank</ion-title>
-      </ion-toolbar>
-    </ion-header>
+    <ion-page>
+        <ion-header class="ion-no-border">
+            <ion-toolbar color="primary">
+                <ion-title>Início</ion-title>
+            </ion-toolbar>
+        </ion-header>
 
-    <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Blank</ion-title>
-        </ion-toolbar>
-      </ion-header>
+        <ion-content color="light" class="ion-padding">
+            <div class="home-container">
+                <div class="welcome-section">
+                    <h1>Olá! 👋</h1>
+                    <p>Como você quer começar hoje?</p>
+                </div>
 
-      <div id="container">
-        <strong>Ready to create an app?</strong>
-        <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-      </div>
-    </ion-content>
-  </ion-page>
+                <div class="actions-section">
+                    <ion-button 
+                        router-link="/tabs/tarefas" 
+                        expand="block" 
+                        shape="round" 
+                        class="main-button"
+                    >
+                        Ver Minha Lista
+                    </ion-button>
+
+                    <ion-button 
+                        router-link="/Login" 
+                        expand="block" 
+                        fill="outline" 
+                        shape="round" 
+                        class="secondary-button"
+                    >
+                        Login
+                    </ion-button>
+
+                    <ion-button 
+                        router-link="/Cadastro" 
+                        fill="clear" 
+                        size="small"
+                        class="link-button"
+                    >
+                        Não tem conta? Cadastre-se
+                    </ion-button>
+                </div>
+            </div>
+        </ion-content>
+    </ion-page>
 </template>
 
 <script setup lang="ts">
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton } from '@ionic/vue';
 </script>
 
 <style scoped>
-#container {
-  text-align: center;
-  
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+.home-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    max-width: 450px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+.welcome-section {
+    text-align: center;
+    margin-bottom: 50px;
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-  
-  color: #8c8c8c;
-  
-  margin: 0;
+.welcome-section h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--ion-color-dark);
 }
 
-#container a {
-  text-decoration: none;
+.actions-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.main-button {
+    height: 56px;
+    font-weight: 700;
+}
+
+.secondary-button {
+    height: 56px;
+    font-weight: 600;
+}
+
+.link-button {
+    --color: var(--ion-color-medium);
+    margin-top: 8px;
 }
 </style>
+
