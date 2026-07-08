@@ -1,88 +1,155 @@
-import { createRouter, createWebHistory } from '@ionic/vue-router';
-import { RouteRecordRaw } from 'vue-router';
-import HomePage from '@/views/HomePage.vue';
-import TabsPage from '@/views/TabsPage.vue';
-import ListaPage from '@/views/ListaPage.vue';
-import DetalhePage from '@/views/DetalhePage.vue';
-import CadastroPage from '@/views/CadastroPage.vue';
-import LoginPage from '@/views/LoginPage.vue';
-import ResetPasswordPage from '@/views/ResetPasswordPage.vue';
-import { usuarioLogado } from '@/composables/useUsers';
-const routes: Array<RouteRecordRaw> = [
+import {
+  createRouter,
+  createWebHistory
+} from "@ionic/vue-router"
+
+import {
+  RouteRecordRaw
+} from "vue-router"
+
+import TabsPage
+from "../views/TabsPage.vue"
+
+import {
+  usuarioLogado
+} from "@/composables/useAuth.js"
+
+const routes:
+Array<RouteRecordRaw> = [
+
   {
-    path: '/',
-    redirect: '/Home'
+    path: "/",
+    redirect: "/login"
   },
+
   {
-    path: '/Home',
-    name: 'Home',
-    component: HomePage
+    path: "/cadastro",
+    component: () =>
+      import(
+        "@/views/cadastroPage.vue"
+      ),
+
+    meta: {
+      public: true
+    }
   },
+
   {
-    path: '/Cadastro',
-    name: 'Cadastro',
-    component: CadastroPage
+    path: "/login",
+    component: () =>
+      import(
+        "@/views/loginPage.vue"
+      ),
+
+    meta: {
+      public: true
+    }
   },
+
   {
-    path: '/Login',
-    name: 'Login',
-    component: LoginPage
+    path: "/resetpass",
+    component: () =>
+      import(
+        "@/views/ResetPassPage.vue"
+      ),
+
+    meta: {
+      public: true
+    }
   },
+
   {
-    path: '/ResetPassword',
-    name: 'ResetPassword',
-    component: ResetPasswordPage
-  },
-  {
-    path: '/tabs',
+    path: "/pages/",
     component: TabsPage,
+
     children: [
       {
-        path: 'tarefas',
-        name: 'Tarefas',
-        component: ListaPage
+        path: "",
+        redirect:
+          "/pages/album"
       },
+
       {
-        path: 'tarefas/:id',
-        name: 'Detalhe',
-        component: DetalhePage
+        path: "termos",
+        component: () =>
+          import(
+            "@/views/SobrePage.vue"
+          )
       },
+
       {
-        path: 'perfil',
-        name: 'Perfil',
-        component: () => import('@/views/PerfilPage.vue')
+        path: "album",
+        component: () =>
+          import(
+            "@/views/AlbumPage.vue"
+          )
+      },
+
+      {
+        path: "perfil",
+        component: () =>
+          import(
+            "@/views/PerfilPage.vue"
+          )
+      },
+
+      {
+        path: "contato-cadastro",
+        component: () =>
+          import(
+            "@/views/ContatoCadastroPage.vue"
+          )
+      },
+
+      {
+        path: "contato-lista",
+        component: () =>
+          import(
+            "@/views/ContatoListPage.vue"
+          )
       }
     ]
   }
 ]
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(
+    import.meta.env.BASE_URL
+  ),
+
   routes
 })
 
-router.beforeEach((to, _, next) => {
+router.beforeEach(
+  (to, from, next) => {
 
-  if (to.path === '/tabs/perfil') {
+    const rotaPublica =
+      to.meta.public
 
-    if (!usuarioLogado.value || !usuarioLogado.value.nome) {
-      next('/tabs/tarefas')
-    } else {
-      next()
+    const logado =
+      !!usuarioLogado.value
+
+    if (
+      !rotaPublica &&
+      !logado
+    ) {
+      return next("/login")
     }
 
-  } else if (to.path.startsWith('/tabs')) {
-
-    if (!usuarioLogado.value) {
-      next('/Login')
-    } else {
-      next()
+    if (
+      logado &&
+      (
+        to.path === "/login" ||
+        to.path === "/cadastro"
+      )
+    ) {
+      return next(
+        "/pages/album"
+      )
     }
 
-  } else {
     next()
   }
-
-})
+)
 
 export default router

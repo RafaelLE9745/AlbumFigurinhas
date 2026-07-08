@@ -1,91 +1,74 @@
 <template>
-    <ion-page>
-        <ion-header class="ion-no-border">
-            <ion-toolbar color="primary">
-                <ion-buttons slot="start">
-                    <ion-back-button default-href="/Home" />
-                </ion-buttons>
-                <ion-title>Meu Perfil</ion-title>
-            </ion-toolbar>
-        </ion-header>
+  <ion-page>
+    <AppHeader
+    titulo="Perfil"
+    />
 
-    <ion-content color="light" class="ion-padding">
-      <div class="perfil-container">
-        <div class="perfil-info">
-          <ion-icon icon="personCircleOutline" class="perfil-icon" />
-          <h2>{{ usuarioLogado?.nome }}</h2>
-          <p class="email">{{ usuarioLogado?.email }}</p>
-          <p class="status">Usuário logado</p>
-        </div>
+    <ion-content class="ion-padding">
 
-        <ion-button 
-          expand="block" 
-          color="danger" 
-          @click="fazerLogout"
-          class="logout-btn"
-        >
-          Sair
-        </ion-button>
-      </div>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Usuário</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+          <ion-item>
+            <ion-label>
+              <h2>Nome</h2>
+              <p>{{ usuarioLogado?.nome || "Não informado" }}</p>
+            </ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              <h2>E-mail</h2>
+              <p>{{ usuarioLogado?.email || "Não informado" }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-button
+        expand="block"
+        color="danger"
+        @click="sair"
+      >
+        Sair
+      </ion-button>
+
     </ion-content>
   </ion-page>
 </template>
 
 <script setup lang="ts">
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonIcon, IonButtons, IonBackButton } from '@ionic/vue';
-import { personCircleOutline } from 'ionicons/icons';
-import { usuarioLogado, Logout } from '@/composables/useUsers';
-import { useRouter } from 'vue-router';
+import { useRouter }
+from "vue-router"
 
-const router = useRouter();
+import {
+  IonPage,
+  IonContent,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent,
+  IonItem,
+  IonLabel,
+  IonButton
+} from "@ionic/vue"
 
-const fazerLogout = () => {
-  Logout();
-  router.replace('/Home');
-};
+import {
+  useAuth
+} from "@/composables/useAuth"
+
+const router = useRouter()
+
+const {
+  usuarioLogado,
+  logout
+} = useAuth()
+
+function sair() {
+  logout()
+  router.push("/login")
+}
 </script>
-
-<style scoped>
-.perfil-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  padding: 20px;
-}
-
-.perfil-info {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.perfil-icon {
-  font-size: 80px;
-  color: var(--ion-color-primary);
-  margin-bottom: 20px;
-}
-
-.perfil-info h2 {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: var(--ion-color-dark);
-  margin-bottom: 8px;
-}
-
-.email {
-  font-size: 0.9rem;
-  color: var(--ion-color-step-600);
-  margin-bottom: 4px;
-}
-
-.status {
-  font-size: 0.95rem;
-  color: var(--ion-color-step-600);
-}
-
-.logout-btn {
-  width: 100%;
-  max-width: 300px;
-}
-</style>
