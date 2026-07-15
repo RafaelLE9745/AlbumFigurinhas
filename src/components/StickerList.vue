@@ -14,6 +14,7 @@
         <StickerCard
           :sticker="sticker"
           @toggle="toggleSticker"
+          @refresh="$emit('refresh')"
         />
 
       </ion-col>
@@ -46,7 +47,8 @@ defineProps<{
 }>()
 
 const emit = defineEmits<{
-  toggle: [id: number]
+  toggle: [id: number],
+  refresh: []
 }>()
 
 function toggleSticker(id: number) {

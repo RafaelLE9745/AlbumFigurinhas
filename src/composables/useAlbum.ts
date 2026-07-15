@@ -80,12 +80,11 @@ export function useAlbum() {
     }
 
     if (filtro.value === "pendentes") {
+      resultado = resultado.filter(sticker => !sticker.coletada)
+    }
 
-      resultado =
-        resultado.filter(
-          sticker => !sticker.coletada
-        )
-
+    if (filtro.value === "favoritas") {
+      resultado = resultado.filter(sticker => sticker.favorite === 1)
     }
 
     return resultado

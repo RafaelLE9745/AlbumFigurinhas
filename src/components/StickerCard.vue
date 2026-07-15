@@ -14,12 +14,22 @@
 
     <ion-card-content>
 
-      <ion-badge
-        :color="sticker.coletada ? 'success' : 'danger'"
-        :class="sticker.coletada ? 'sticker-status collected' : 'sticker-status pending'"
-      >
-        {{ sticker.coletada ? 'Coletada' : 'Pendente' }}
-      </ion-badge>
+      <div class="flex-between">
+        <ion-badge
+          :color="sticker.coletada ? 'success' : 'danger'"
+          :class="sticker.coletada ? 'sticker-status collected' : 'sticker-status pending'"
+        >
+          {{ sticker.coletada ? 'Coletada' : 'Pendente' }}
+        </ion-badge>
+
+        <ion-button fill="clear" @click.stop="toggleFav">
+          <ion-icon :icon="sticker.favorite ? heart : heartOutline" :color="sticker.favorite ? 'danger' : 'medium'"></ion-icon>
+        </ion-button>
+      </div>
+
+      <p v-if="sticker.coletada && sticker.collected_at" class="collect-date">
+        Coletada em: {{ new Date(sticker.collected_at).toLocaleDateString() }}
+      </p>
 
       <ion-button
         expand="block"
@@ -47,8 +57,12 @@ import {
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
-  IonImg
+  IonImg,
+  IonIcon
 } from "@ionic/vue"
+import { heart, heartOutline } from 'ionicons/icons'
+import { toggleFavorite } from '@/services/database'
+import { usuarioLogado } from '@/composables/useAuth'
 
 const props = defineProps<{
   sticker: {
@@ -62,13 +76,17 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  toggle: [id: number]
+  toggle: [id: number],
+  refresh: []
 }>()
 
 function toggleColetada() {
-  emit(
-    "toggle",
-    props.sticker.id
-  )
+  emit("toggle", props.sticker.id)
+}
+
+async function toggleFav() {
+  if (!usuarioLogado.value) return;
+  await toggleFavorite(usuarioLogado.value.id, props.sticker.id);
+  emit("refresh");
 }
 </script>
