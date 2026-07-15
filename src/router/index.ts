@@ -99,6 +99,13 @@ Array<RouteRecordRaw> = [
             "@/views/ConquistasPage.vue"
           )
       },
+      {
+        path: "estatisticas",
+        component: () =>
+          import(
+            "@/views/EstatisticasPage.vue"
+          )
+      },
 
       {
         path: "contato-cadastro",

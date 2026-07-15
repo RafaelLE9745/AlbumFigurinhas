@@ -13,6 +13,11 @@
           <ion-label>Conquistas</ion-label>
         </ion-tab-button>
 
+        <ion-tab-button tab="estatisticas" href="/pages/estatisticas">
+          <ion-icon aria-hidden="true" :icon="barChartOutline" />
+          <ion-label>Estatísticas</ion-label>
+        </ion-tab-button>
+
         <ion-tab-button tab="sobre" href="/pages/termos">
           <ion-icon aria-hidden="true" :icon="informationCircleOutline" />
           <ion-label>Sobre</ion-label>
@@ -31,5 +36,5 @@
 
 <script setup lang="ts">
 import { IonTabBar, IonTabButton, IonTabs, IonLabel, IonIcon, IonPage, IonRouterOutlet } from '@ionic/vue';
-import { bookOutline, personOutline, informationCircleOutline, trophyOutline } from 'ionicons/icons';
+import { bookOutline, personOutline, informationCircleOutline, trophyOutline, barChartOutline } from 'ionicons/icons';
 </script>

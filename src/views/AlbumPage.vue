@@ -44,11 +44,18 @@
           </ion-label>
         </ion-segment-button>
 
+        <ion-segment-button value="favoritas">
+          <ion-label>
+            Favoritas
+          </ion-label>
+        </ion-segment-button>
+
       </ion-segment>
 
       <StickerList
         :stickers="stickersFiltradas"
         @toggle="marcarColetada"
+        @refresh="carregarAlbum"
       />
 
     </ion-content>
@@ -81,6 +88,7 @@ const {
   marcarColetada,
   stickersFiltradas,
   totalFigurinhas,
-  totalColetadas
+  totalColetadas,
+  carregarAlbum
 } = useAlbum()
 </script>
